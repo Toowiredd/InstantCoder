@@ -1,9 +1,9 @@
 import dedent from "dedent";
 import { z } from "zod";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { OpenRouter } from "openrouter";
 
-const apiKey = process.env.GOOGLE_AI_API_KEY || "";
-const genAI = new GoogleGenerativeAI(apiKey);
+const apiKey = process.env.OPENROUTER_API_KEY || "";
+const openRouter = new OpenRouter(apiKey);
 
 export async function POST(req: Request) {
   let json = await req.json();
@@ -26,9 +26,9 @@ export async function POST(req: Request) {
   let { model, messages } = result.data;
   let systemPrompt = getSystemPrompt();
 
-  const geminiModel = genAI.getGenerativeModel({model: model});
+  const openRouterModel = openRouter.getGenerativeModel({model: model});
 
-  const geminiStream = await geminiModel.generateContentStream(
+  const openRouterStream = await openRouterModel.generateContentStream(
     messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with \`\`\`typescript or \`\`\`javascript or \`\`\`tsx or \`\`\`."
   );
 
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
   const readableStream = new ReadableStream({
     async start(controller) {
-      for await (const chunk of geminiStream.stream) {
+      for await (const chunk of openRouterStream.stream) {
         const chunkText = chunk.text();
         controller.enqueue(new TextEncoder().encode(chunkText));
       }
