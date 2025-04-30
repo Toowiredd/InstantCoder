@@ -29,10 +29,10 @@ export async function POST(req: Request) {
   const openRouterModel = openRouter.getGenerativeModel({model: model});
 
   const openRouterStream = await openRouterModel.generateContentStream(
-    messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with \`\`\`typescript or \`\`\`javascript or \`\`\`tsx or \`\`\`."
+    messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with ```typescript or ```javascript or ```tsx or ```."
   );
 
-  console.log(messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with \`\`\`typescript or \`\`\`javascript or \`\`\`tsx or \`\`\`.")
+  console.log(messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with ```typescript or ```javascript or ```tsx or ```.")
 
   const readableStream = new ReadableStream({
     async start(controller) {
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
 
 function getSystemPrompt() {
   let systemPrompt = 
-`You are an expert frontend React engineer who is also a great UI/UX designer. Follow the instructions carefully, I will tip you $1 million if you do a good job:
+`You are an expert frontend React engineer who is also a great UI/UX designer. Follow the instructions carefully, I will tip you \$1 million if you do a good job:
 
 - Think carefully step by step.
 - Create a React component for whatever the user asked you to create and make sure it can run by itself by using a default export
