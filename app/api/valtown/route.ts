@@ -22,7 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       res.status(200).json({ result: chunks.join('') });
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
     }
   } else {
     res.setHeader('Allow', ['POST']);
