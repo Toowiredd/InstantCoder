@@ -5,7 +5,30 @@ import { OpenRouter } from "openrouter";
 const apiKey = process.env.OPENROUTER_API_KEY || "";
 const openRouter = new OpenRouter(apiKey);
 
+const rateLimit = {
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+};
+
+let requestCounts = new Map();
+
 export async function POST(req: Request) {
+  let ip = req.headers.get("x-forwarded-for") || req.connection.remoteAddress;
+  let now = Date.now();
+  let requestCount = requestCounts.get(ip) || { count: 0, lastRequest: now };
+
+  if (now - requestCount.lastRequest > rateLimit.windowMs) {
+    requestCount = { count: 0, lastRequest: now };
+  }
+
+  requestCount.count += 1;
+  requestCount.lastRequest = now;
+  requestCounts.set(ip, requestCount);
+
+  if (requestCount.count > rateLimit.max) {
+    return new Response("Too many requests, please try again later.", { status: 429 });
+  }
+
   let json = await req.json();
   let result = z
     .object({
