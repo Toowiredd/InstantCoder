@@ -7,11 +7,11 @@ export default function Footer() {
         <div className="font-medium">
           Built with{" "}
           <a
-            href="https://ai.google.dev/gemini-api/docs"
+            href="https://openrouter.ai/docs"
             className="font-semibold text-blue-600 underline-offset-4 transition hover:text-gray-700 hover:underline"
             target="_blank"
           >
-            Gemini API
+            OpenRouter API
           </a>{" "}
           and{" "}
           <a

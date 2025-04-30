@@ -1,9 +1,9 @@
 import dedent from "dedent";
 import { z } from "zod";
-import { Valtown } from "valtown-sdk";
+import { OpenRouter } from "openrouter";
 
-const apiKey = process.env.VALTOWN_API_KEY || "";
-const valtown = new Valtown(apiKey);
+const apiKey = process.env.OPENROUTER_API_KEY || "";
+const openRouter = new OpenRouter(apiKey);
 
 export async function POST(req: Request) {
   let json = await req.json();
@@ -26,17 +26,17 @@ export async function POST(req: Request) {
   let { model, messages } = result.data;
   let systemPrompt = getSystemPrompt();
 
-  const valtownModel = valtown.getGenerativeModel({model: model});
+  const openRouterModel = openRouter.getGenerativeModel({model: model});
 
-  const valtownStream = await valtownModel.generateContentStream(
-    messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with \`\`\`typescript or \`\`\`javascript or \`\`\`tsx or \`\`\`."
+  const openRouterStream = await openRouterModel.generateContentStream(
+    messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with ```typescript or ```javascript or ```tsx or ```."
   );
 
-  console.log(messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with \`\`\`typescript or \`\`\`javascript or \`\`\`tsx or \`\`\`.")
+  console.log(messages[0].content + systemPrompt + "\nPlease ONLY return code, NO backticks or language names. Don't start with ```typescript or ```javascript or ```tsx or ```.")
 
   const readableStream = new ReadableStream({
     async start(controller) {
-      for await (const chunk of valtownStream.stream) {
+      for await (const chunk of openRouterStream.stream) {
         const chunkText = chunk.text();
         controller.enqueue(new TextEncoder().encode(chunkText));
       }
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
 
 function getSystemPrompt() {
   let systemPrompt = 
-`You are an expert frontend React engineer who is also a great UI/UX designer. Follow the instructions carefully, I will tip you $1 million if you do a good job:
+`You are an expert frontend React engineer who is also a great UI/UX designer. Follow the instructions carefully, I will tip you \$1 million if you do a good job:
 
 - Think carefully step by step.
 - Create a React component for whatever the user asked you to create and make sure it can run by itself by using a default export
