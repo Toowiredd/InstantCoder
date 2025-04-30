@@ -67,3 +67,12 @@
     opacity: 0.2;
   }
 }
+
+/* Enhanced loading indicators */
+.loading span {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loading2 span {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}

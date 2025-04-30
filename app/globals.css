@@ -22,3 +22,59 @@
   font-weight: 700;
   font-style: normal;
 }
+
+/* Enhanced visual design using modern and consistent UI components */
+body {
+  font-family: "Aeonik", sans-serif;
+  background-color: #f8fafc;
+  color: #1f2937;
+}
+
+a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Improved layout and spacing of elements */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.header,
+.footer {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.main-content {
+  padding: 2rem 0;
+}
+
+/* Add animations and transitions */
+button {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

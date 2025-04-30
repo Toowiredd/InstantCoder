@@ -3,9 +3,6 @@ import bgImg from "@/public/halo.png";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ThemeToggle from "@/components/ThemeToggle";
-import { Valtown } from "valtown-sdk"; // Import Valtown
-
-const valtown = new Valtown(); // Initialize Valtown
 
 export default function Layout({
   children,
